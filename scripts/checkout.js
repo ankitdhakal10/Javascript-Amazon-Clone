@@ -4,21 +4,21 @@ import { formatCurrency } from './utils/money.js'
 
 let cartSummaryHTML = '';
 
-cart.forEach((cartItem)=> {
+cart.forEach((cartItem) => {
 
-  const productId  = cartItem.id;
+  const productId = cartItem.id;
 
   let matchingProduct;
 
-  products.forEach((product)=> {
-    if(productId === product.id) {
+  products.forEach((product) => {
+    if (productId === product.id) {
       matchingProduct = product;
     }
   })
 
 
   cartSummaryHTML += `
-  <div class="cart-item-container">
+  <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
             <div class="delivery-date">
               Delivery date: Tuesday, June 21
             </div>
@@ -103,12 +103,16 @@ document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
 
 
 document.querySelectorAll('.js-delete-link')
-    .forEach((link)=> {
-      link.addEventListener('click', ()=> {
+  .forEach((link) => {
+    link.addEventListener('click', () => {
 
-        const productId  = link.dataset.productId;
+      const productId = link.dataset.productId;
 
-        removeFromCart(productId);
-        console.log(cart);
-      });
-    })
+      removeFromCart(productId);
+      
+      const container = document.querySelector(`.js-cart-item-container-${productId}`);
+      container.remove();
+    });
+  });
+
+
