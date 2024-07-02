@@ -7,19 +7,30 @@ import { loadCart } from "../data/cart.js";
 // import '../data/backend-practice.js'
 
 async function loadPage() {
-  console.log('load page');
+
+  try {
+
+    // throw 'error1';
 
   await loadProductsFetch();
 
   await new Promise((resolve, reject)=> {
+
+    // throw 'error2';
+
     loadProducts(()=> {
+      // reject('error3');
       resolve('value1');
     });
   })
 
+} catch(error) {
+  console.log(error,'unexpected error. Please try again later.');
+}
+  
   renderOrderSummary();
   renderPaymentSummary();
-
+  
   return 'value2';
 }
 
