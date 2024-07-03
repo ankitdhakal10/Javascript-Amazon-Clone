@@ -132,7 +132,7 @@ data-delivery-option-id="${deliveryOption.id}"
     .forEach((link) => {
       link.addEventListener('click', () => {
 
-        const productId = link.dataset.productId;
+        const { productId }= link.dataset;
 
         removeFromCart(productId);
 
