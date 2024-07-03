@@ -5,8 +5,9 @@ import {
 import { getProduct } from '../../data/products.js'
 import formatCurrency from '../utils/money.js'
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
-import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
+import { deliveryOptions, getDeliveryOption, calculateDeliveryDate } from '../../data/deliveryOptions.js';
 import { renderPaymentSummary } from './paymentSummary.js';
+import { renderCheckoutHeader } from './checkoutHeader.js';
 
 
 export function renderOrderSummary() {
@@ -26,10 +27,7 @@ export function renderOrderSummary() {
 
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
-    const today = dayjs();
-    const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
-    const dateString = deliveryDate.format('dddd, MMMM D');
-
+    const dateString = calculateDeliveryDate(deliveryOption);
 
     cartSummaryHTML += `
           <div class="cart-item-container
@@ -90,10 +88,7 @@ export function renderOrderSummary() {
 
     deliveryOptions.forEach((deliveryOption) => {
 
-      const today = dayjs();
-      const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
-      const dateString = deliveryDate.format('dddd, MMMM D')
-
+      const dateString = calculateDeliveryDate(deliveryOption);
 
       const priceString = deliveryOption.priceCents === 0
         ? 'FREE'
@@ -141,6 +136,8 @@ data-delivery-option-id="${deliveryOption.id}"
 
         updateCartQuantity();
 
+        renderCheckoutHeader();
+        renderOrderSummary();
         renderPaymentSummary();
       });
     });
@@ -189,7 +186,7 @@ data-delivery-option-id="${deliveryOption.id}"
         );
         const newQuantity = Number(quantityInput.value);
 
-        if (newQuantity < 0 || newQuantity >= 1000) {
+        if (newQuantity <= 0 || newQuantity >= 1000) {
           alert('Quantity must be at least 0 and less than 1000');
           return;
         }
@@ -207,6 +204,8 @@ data-delivery-option-id="${deliveryOption.id}"
         quantityLabel.innerHTML = newQuantity;
 
         updateCartQuantity();
+        renderCheckoutHeader();
+        renderOrderSummary();
         renderPaymentSummary();
       });
     });
