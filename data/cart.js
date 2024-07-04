@@ -111,3 +111,8 @@ export function loadCart(fun) {
   xhr.send();
 
 };
+
+export function resetCart() {
+  cart = [];
+  saveToStorage();
+};

@@ -1,4 +1,4 @@
-import { calculateCartQuantity, cart } from "../../data/cart.js";
+import { calculateCartQuantity, cart, resetCart } from "../../data/cart.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import { getProduct } from "../../data/products.js";
 import formatCurrency from "../utils/money.js";
@@ -82,6 +82,7 @@ document.querySelector('.js-place-order')
       console.log(error, 'unexpected error. Please try again later');
     }
 
+    resetCart();
     window.location.href = 'orders.html';
     
   });
